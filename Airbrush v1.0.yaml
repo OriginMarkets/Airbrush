@@ -1,0 +1,2124 @@
+swagger: '2.0'
+info:
+  title: Trades API
+  description: 'Specification for fetching post trade trade data<br>
+
+    This endpoint requires a valid API key and will return data based on the key.
+
+    '
+  version: 1.0.0
+produces:
+- application/json
+paths:
+  /trades/:
+    get:
+      summary: Returns a list of JSON objects of the trades that you have access to.
+      tags:
+      - Trades
+      parameters:
+      - name: API-Key
+        in: header
+        description: 'A unique API key used for authentication provided by Origin.<br>
+
+          If the key is omitted, you will obtain this documentation page as response.
+
+          '
+        type: string
+      responses:
+        200:
+          description: Each object in the list represents a single trade.
+          schema:
+            $ref: '#/definitions/TradeDataListAPIResponse'
+        403:
+          description: 'Permission denied as the API-Key provided is invalid.
+
+            Be sure to copy/paste the key exactly as provided by Origin.
+
+            If it still doesn''t work, contact Origin support.
+
+            '
+          schema:
+            type: object
+            properties:
+              detail:
+                type: string
+                default: Invalid API Key
+  /trades/{TradeId}/:
+    get:
+      summary: Returns a JSON object of the trade with the given id, provided you
+        have access to it.
+      tags:
+      - Trades
+      parameters:
+      - name: API-Key
+        in: header
+        description: 'A unique API key used for authentication provided by Origin.<br>
+
+          If the key is omitted, you will obtain this documentation page as response.
+
+          '
+        type: string
+      - name: TradeId
+        required: true
+        in: path
+        description: The unique ID of the trade.
+        type: integer
+      responses:
+        200:
+          description: Each object in the list represents a single trade.
+          schema:
+            $ref: '#/definitions/TradeDataAPIResponse'
+        403:
+          description: 'Permission denied as the API-Key provided is invalid.
+
+            Be sure to copy/paste the key exactly as provided by Origin.
+
+            If it still doesn''t work, contact Origin support.
+
+            '
+          schema:
+            type: object
+            properties:
+              detail:
+                type: string
+                default: Invalid API Key
+definitions:
+  TradeDataListAPIResponse:
+    type: object
+    properties:
+      coupon_type:
+        allOf:
+        - $ref: '#/definitions/CouponType'
+        - description: This Trade's coupon type.
+      coupon_type_iso:
+        allOf:
+        - $ref: '#/definitions/CouponTypeISO'
+        - description: ISO 20022 InterestTypeCode code which indicates the coupon
+            type (fixed, variable, etc.). Mandatory.
+      currency:
+        allOf:
+        - $ref: '#/definitions/Currency'
+        - description: The short code for this Trades's currency.
+      dealers:
+        type: array
+        description: 'The dealer(s) on this Trade.
+
+          '
+        items:
+          type: string
+      documentation:
+        allOf:
+        - $ref: '#/definitions/Documentation'
+        - description: The documentation type that this Trade is issued off of.
+      is_syndicated:
+        type: boolean
+        description: 'Whether this Trade''s distribution is Syndicated or Non-Syndicated.
+
+          '
+      is_benchmark:
+        type: boolean
+        description: 'Whether this Trade''s distribution is considered a benchmark
+          trade or a private placement.
+
+          '
+      is_test:
+        type: boolean
+        description: 'Whether this Trade is a test trade or a live trade.
+
+          '
+      isin_code:
+        type: string
+        pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
+        description: 'The Trade''s ISIN code.
+
+          '
+      issuer:
+        type: string
+        description: 'The issuing entity for this Trade.
+
+          '
+      maturity_date:
+        type: string
+        format: date
+        description: 'The maturity date.
+
+          '
+      settlement_date:
+        type: string
+        format: date
+        description: 'The settlement date.
+
+          '
+      size:
+        type: integer
+        description: 'The size of the Trade.
+
+          '
+      status_of_the_notes:
+        allOf:
+        - $ref: '#/definitions/ProductType'
+        - description: This Trades's product type.
+      trade_date:
+        type: string
+        format: date
+        description: 'The trade date.
+
+          '
+      trade_id:
+        type: integer
+        description: 'The unique identifier for each Trade.
+
+          '
+    example:
+    - trade_id: 33
+      issuer: Issuer ABC
+      dealers:
+      - Dealer XYZ
+      currency: EUR
+      size: 100000000
+      coupon_type: Fixed Rate
+      coupon_type_iso: FIXD
+      status_of_the_notes: Senior Unsecured
+      documentation: EMTN
+      trade_date: 2020-4-14
+      settlement_date: 2020-4-20
+      maturity_date: 2030-4-20
+      is_syndicated: true
+      is_benchmark: true
+      is_test: true
+      isin_code: XS1234567890
+    - trade_id: 74
+      issuer: Issuer DEF
+      dealer:
+      - Dealer XYZ
+      currency: GBP
+      size: 500000000
+      coupon_type: Floating Rate
+      coupon_type_iso: FIXD
+      status_of_the_notes: Senior Preferred
+      documentation: GMTN
+      trade_date: 2020-6-12
+      settlement_date: 2021-6-18
+      maturity_date: 2028-4-20
+      is_syndicated: true
+      is_benchmark: true
+      is_test: true
+      isin_code: XS1234567891
+  TradeDataAPIResponse:
+    type: object
+    properties:
+      accrual_quotation_type:
+        allOf:
+        - $ref: '#/definitions/AccrualQuotationType'
+        - description: Indicates whether acrued interest is included or excluded from
+            prices on the transaction. Mandatory.
+      annual_interest_payment_dates:
+        type: array
+        items:
+          type: string
+          format: date
+        description: 'The annual dates on which coupon payments are intended to be
+          made, notwithstanding any broken/stub periods or adjustments due to open
+          business days. Mandatory unless coupon type is Zero Coupon. List of ISO
+          8601 dates with no year [--MM-DD, --MM-DD...]
+
+          '
+      broken_initial_stub_type:
+        allOf:
+        - $ref: '#/definitions/InitialStubType'
+        - description: Indicates the type of broken/stub period. Mandatory (can be
+            'None' if not required).
+      broken_last_stub_type:
+        allOf:
+        - $ref: '#/definitions/FinalStubType'
+        - description: Indicates the type of broken/stub period. Mandatory (can be
+            'None' if not required).
+      business_days_for_payment:
+        description: Indicates the calendar used to determine the payment business
+          day. Payment must be made on an open business day of the named financial
+          centres. Mandatory.
+        type: array
+        items:
+          type: string
+          allOf:
+          - $ref: '#/definitions/FinancialCentre'
+      business_days_for_payment_iso:
+        description: 'ISO 20022 FinancialCenterCode(s) which indicate the calendar
+          used to determine the payment business day. Payment must be made on an open
+          business day of the named financial centre. Where an ISO code is not available,
+          ''OTHR'' will be provided - see the business_days_for_payment for the payment
+          calendar location(s). Mandatory.
+
+          '
+        type: array
+        items:
+          type: string
+          allOf:
+          - $ref: '#/definitions/FinancialCentreISO'
+      calculation_agent:
+        type: string
+        description: 'An agent appointed by the issuer to process and disseminate
+          coupon rate fixing or redemption information and to determine the amount
+          payable under a security. Mandatory for notes with a Floating Rate component.
+
+          '
+      cfi_code:
+        type: string
+        pattern: ^[A-Z]{6}$
+        description: 'The CFI (ISO 10962, 6 letters) is assigned with the ISIN by
+          the numbering agency. Conditional based on issuer requirements.
+
+          '
+      cins_code:
+        type: string
+        pattern: ^[0-9A-Z]{9}$
+        description: 'A CINS number is an extension to the CUSIP numbering system,
+          which is used to uniquely identify securities offered outside of the United
+          States and Canada. Just as with CUSIP numbers, the CINS number consists
+          of nine characters.
+
+          '
+      clearing_system:
+        allOf:
+        - $ref: '#/definitions/ClearingSystem'
+        - description: The clearing system which will be used to clear the trade.
+            Mandatory.
+      cmu_code:
+        type: string
+        pattern: ^[A-Z]{6}[0-9]{5}$
+        description: 'The CMU code is used by Hong Kong Monetary Authority to provide
+          computerised clearing and settlement facilities for Exchange Fund Bills
+          and Notes.
+
+          '
+      common_code:
+        type: string
+        pattern: ^[0-9A-Z]{9}$
+        description: 'A 9-digit number used to uniquely identify individual securities
+          between the ICSDs and their participants, and allocated by either of the
+          ICSDs.
+
+          '
+      coupon_type:
+        allOf:
+        - $ref: '#/definitions/CouponType'
+        - description: Indicates the coupon type (fixed, variable, etc.). Mandatory.
+      coupon_type_iso:
+        allOf:
+        - $ref: '#/definitions/CouponTypeISO'
+        - description: ISO 20022 InterestTypeCode code which indicates the coupon
+            type (fixed, variable, etc.). Mandatory.
+      currency_notional:
+        allOf:
+        - $ref: '#/definitions/Currency'
+        - description: 3 letter ISO 4127 code representing the currency of the notional.
+            Mandatory.
+      currency_payment:
+        allOf:
+        - $ref: '#/definitions/Currency'
+        - description: 3 letter ISO 4127 code representing the currency in which payment
+            is to be made. Mandatory if the payment currency differs from the notional
+            currency.
+      currency_settlement:
+        allOf:
+        - $ref: '#/definitions/Currency'
+        - description: 3 letter ISO 4127 code representing the currency in which the
+            issue will be settled. Mandatory if the currency_settlement is not a an
+            eligible settlement currency in an ICSD.
+      cusip_code:
+        type: string
+        pattern: ^[0-9A-Z]{9}$
+        description: 'Unique 9 digit alpha-numeric identification code assigned to
+          stocks and registered bonds in the United States and Canada. It comprises
+          nine letters and includes letters and numbers.
+
+          '
+      dealer_clearing:
+        allOf:
+        - $ref: '#/definitions/ClearingSystem'
+        - description: Clearing system used by the billing and delivery dealer/manager
+            for the distribution of funds. Mandatory.
+      dealer_clearing_account:
+        type: string
+        description: 'Clearing system account 5 digit number used by the billing and
+          delivery dealer/managers for the distribution of funds. Mandatory.
+
+          '
+      dealers:
+        type: array
+        items:
+          type: string
+        description: 'Dealer/managers associated with the transaction. Mandatory.
+
+          '
+      delivery:
+        allOf:
+        - $ref: '#/definitions/Delivery'
+        - description: Delivery versus payment (DVP) is a securities industry settlement
+            method that guarantees the transfer of securities only happens after payment
+            has been made. Deliery free of payment (FOP) settlement involves delivery
+            of the securities without a prior/simultaneous (or in some cases any)
+            transfer of funds. Mandatory.
+      documentation:
+        allOf:
+        - $ref: '#/definitions/Documentation'
+        - description: Indicates the type of programme associated with the issuance.
+            Mandatory for programme issuance.
+      ecb_eligible:
+        type: boolean
+        description: 'Flag to indicate the security is intended to be held in a manner
+          that could allow the Eurosystem Eligibility. Mandatory for NGN or for CGN
+          if under the New Safekeeping Structure (NSS).
+
+          '
+      fisn_code:
+        type: string
+        pattern: ^(?=.{1,35}$)(?:((?:[^/]){1,15})/([^/]+))$
+        description: 'A FISN is an ISO 18774 standard that encompasses an issuer of
+          securities'' short name. The FISN is an abbreviated version of the long
+          company name and can only be up to 15 characters in length.
+
+          '
+      fixed_business_day_adjustment:
+        allOf:
+        - $ref: '#/definitions/BusinessDayAdjustmentType'
+        - description: Specifies whether the interest period end date moves if the
+            planned interest end date falls on a non-business day. Mandatory for fixed
+            rate notes.
+      fixed_business_day_convention:
+        allOf:
+        - $ref: '#/definitions/BusinessDayConvention'
+        - description: Specifies how a date is adjusted when it falls on a non-business
+            day. Mandatory for fixed rate notes.
+      fixed_business_day_convention_iso:
+        allOf:
+        - $ref: '#/definitions/BusinessDayConventionISO'
+        - description: ISO 20022 code which specifies how a date is adjusted when
+            it falls on a non-business day. Where an ISO code is not available for
+            a specific business day convention, we will return OTHR - please see business_day_convention.
+            Mandatory for fixed rate notes.
+      fixed_coupon_amount:
+        type: number
+        format: float
+        description: 'Amount of fixed interest that will be received per denomination.
+          Mandatory for notes with a Fixed Rate component.
+
+          '
+      fixed_coupon_rate:
+        type: number
+        format: float
+        description: 'Per annum ratio of interest paid to the principal amount of
+          the financial instrument. Mandatory for notes with a Fixed Rate component.
+
+          '
+      fixed_day_count_fraction:
+        allOf:
+        - $ref: '#/definitions/DayCountConvention'
+        - description: Specifies the computation method of (accrued) interest of a
+            fixed rate security. Mandatory for fixed rate notes.
+      fixed_day_count_fraction_iso:
+        allOf:
+        - $ref: '#/definitions/DayCountConventionISO'
+        - description: ISO 20022 InterestComputationMethod1Code reference codes associated
+            with the fixed_day_count_fraction field. Mandatory for fixed rate notes.
+      floating_basis:
+        allOf:
+        - $ref: '#/definitions/FundingBasis'
+        - description: The benchmark rate and its periodicity (where applicable).
+            Mandatory for notes with a Floating Rate component.
+      floating_basis_term:
+        type: integer
+        description: 'In case the underlying is an index, the term of the index (See
+          MiFID RTS23 field 21). Mandatory for floating rate notes where the floating_basis_type
+          is a Term Rate.
+
+          '
+      floating_basis_term_period:
+        allOf:
+        - $ref: '#/definitions/FloatingBasisTermPeriod'
+        - description: In case the underlying is an index, the term of the index (See
+            MiFID RTS23 field 21). Mandatory for floating rate notes where the floating_basis_type
+            is a Term Rate.
+      floating_basis_type:
+        allOf:
+        - $ref: '#/definitions/FloatingBasisType'
+        - description: "Determines whether the rate used is a term rate (e.g. LIBOR)\
+            \ or an overnight rate (e.g. SOFR/SONIA/\u20ACSTR). Mandatory for bonds\
+            \ with a floating rate component."
+      floating_business_day_adjustment:
+        allOf:
+        - $ref: '#/definitions/BusinessDayAdjustmentType'
+        - description: Specifies whether the interest period end date moves if the
+            planned interest end date falls on a non-business day. Mandatory for floating
+            rate notes.
+      floating_business_day_convention:
+        allOf:
+        - $ref: '#/definitions/BusinessDayConvention'
+        - description: Specifies how a date is adjusted when it falls on a non-business
+            day. Mandatory for floating rate notes.
+      floating_business_day_convention_iso:
+        allOf:
+        - $ref: '#/definitions/BusinessDayConventionISO'
+        - description: ISO 20022 code which specifies how a date is adjusted when
+            it falls on a non-business day. Where an ISO code is not available for
+            a specific business day convention, we will return OTHR - please see the
+            floating_business_day_convention field. Mandatory for floating rate notes.
+      floating_day_count_fraction:
+        allOf:
+        - $ref: '#/definitions/DayCountConvention'
+        - description: Specifies the computation method of (accrued) interest of a
+            floating rate security. Mandatory for floating rate notes.
+      floating_day_count_fraction_iso:
+        allOf:
+        - $ref: '#/definitions/DayCountConventionISO'
+        - description: ISO 20022 InterestComputationMethod1Code reference codes associated
+            with the floating_day_count_fraction field. Mandatory for floating rate
+            notes.
+      floating_interest_determination_manner:
+        allOf:
+        - $ref: '#/definitions/FloatingInterestDeterminationManner'
+        - description: Whether the floating_basis for calculating the floating rate
+            coupon will be determined via Screen Rate Determination or ISDA Determination.
+            Mandatory for notes with a Floating Rate component.
+      floating_interest_fixing_reference_date:
+        allOf:
+        - $ref: '#/definitions/FloatingInterestFixingReferenceDate'
+        - description: The reference point from which a number of days is deducted
+            to get to the date on which the floating rate coupon is fixed. Mandatory
+            for notes with a Floating Rate component.
+      floating_margin:
+        type: number
+        format: float
+        description: 'Margin expressed in percentage that must be added or deducted
+          from the floating rate base index to calculate the final rate. Mandatory
+          for notes with a Floating Rate component.
+
+          '
+      floating_max_interest_rate:
+        type: number
+        format: float
+        description: 'The maximum interest rate or ''cap'' to be used when calculating
+          the floating rate coupon. Mandatory for floating rate notes where a maximum
+          interest rate is required.
+
+          '
+      floating_min_interest_rate:
+        type: number
+        format: float
+        description: 'The minimum interest rate or ''floor'' to be used when calculating
+          the floating rate coupon. Mandatory for floating rate notes where a minimum
+          interest rate is required.
+
+          '
+      floating_number_of_days:
+        type: integer
+        description: 'For term rates, the number of business days to deduct from the
+          floating_interest_fixing_reference_date to get to the coupon fixing date.
+          Mandatory for notes with a Floating Rate component where the floating_basis_type
+          is Term Rate.
+
+          '
+      floating_overnight_calculation_type:
+        allOf:
+        - $ref: '#/definitions/FloatingOvernightCalculationType'
+        - description: The type of calculation methodology applied to overnight rates
+            for the purposes of calculating a variable rate coupon.  Mandatory for
+            floating rate notes where the floating basis is an overnight rate.
+      floating_overnight_determination_method:
+        allOf:
+        - $ref: '#/definitions/FloatingOvernightDeterminationMethod'
+        - description: Indicates whether the rate will be calculated with reference
+            to an index or calculated for each period. Mandatory for floating rate
+            notes where the floating basis is an overnight rate.
+      floating_overnight_observation_method:
+        allOf:
+        - $ref: '#/definitions/FloatingOvernightObservationMethod'
+        - description: Indicates the observation method to be used in determining
+            the variable rate for overnight rates. Mandatory for floating rate notes
+            where the floating basis is an overnight rate.
+      floating_overnight_period_p:
+        type: integer
+        description: 'The number of days often referred to as "p" in the formula for
+          calculating Overnight Rates. It is the lag/obervation shift/lockout period
+          used in calculating the coupon rate for overnight rates, or where an index
+          is used for calculation, the number of days prior to the floating_interest_fixing_reference_date
+          by which the index-based fixing takes place. Mandatory for floating rate
+          notes where the floating_basis_type is Overnight Rate.
+
+          '
+      floating_relevant_benchmark:
+        allOf:
+        - $ref: '#/definitions/FloatingRelevantBenchmarkBase'
+        - description: The benchmark rate used to price the floating rate coupon.
+            Mandatory for notes with a Floating Rate component.
+      floating_relevant_benchmark_iso:
+        allOf:
+        - $ref: '#/definitions/FloatingRelevantBenchmarkBaseISO'
+        - description: ISO 20022 BenchmarkCurveNameCode code for the benchmark rate
+            used to price the floating rate coupon. Where an ISO code is not available
+            for a specific benchmark rate, we will return "OTHR" - please see floating_relevant_benchmark_base_code.
+            Mandatory for notes with a Floating Rate component.
+      floating_relevant_financial_centre_for_fixing:
+        allOf:
+        - $ref: '#/definitions/FinancialCentre'
+        - description: Calendar of the financial centre taken into account in fixing
+            the rate. Mandatory for notes with a Floating Rate component.
+      floating_relevant_financial_centre_for_fixing_iso:
+        allOf:
+        - $ref: '#/definitions/FinancialCentreISO'
+        - description: ISO 20022 code associated with the financial place taken into
+            account in fixing the rate. Where an ISO code is not available, "OTHR"
+            will be provided - see the floating_relevant_financial_centre_for_fixing
+            for the financial centre. Mandatory for notes with a Floating Rate component.
+      form_of_the_notes:
+        allOf:
+        - $ref: '#/definitions/FormOfTheNote'
+        - description: 'Bearer: The owner is not registered in the books of the issuer
+            or of the registrar
+
+            Registered: Securities are recorded in the name of the owner on the books
+            of the issuer or the issuer''s registrar and can only be transferred to
+            another owner when endorsed by the registered owner.
+
+            Other forms of the notes refer to local domestic formats which are currently
+            not eligible for the ICSDs.
+
+            Mandatory for MTN issuances.
+
+            '
+      form_of_the_notes_after_exchange_physical_form:
+        allOf:
+        - $ref: '#/definitions/FormOfTheNotesAfterExchangePhysicalForm'
+        - description: 'Indicates the physical form of the securities after the exchange
+            of the initial certificate issued on the closing date. Mandatory for Bearer
+            Notes with a Temporary Global Note Initial Physical Form.
+
+            '
+      form_of_the_notes_initial_physical_form:
+        allOf:
+        - $ref: '#/definitions/FormOfTheNotesInitialPhysicalForm'
+        - description: 'Indicates the physical form of the securities on the closing
+            date. Mandatory for Bearer notes.
+
+            '
+      global_note_type:
+        allOf:
+        - $ref: '#/definitions/GlobalNoteType'
+        - description: 'Identifies if the security will be issued in New Global Note
+            (NGN) or Classical Global Note (CGN). Mandatory.
+
+            - New Global Note (NGN) Form of global certificate which refers to the
+            books and records of the ICSDs to determine the IOA.
+
+            - Classical Global Note (CGN): Form of Global certificate which requires
+            physical annotation on the attached schedule to reflect changes in the
+            IOA.
+
+            '
+      governing_law:
+        allOf:
+        - $ref: '#/definitions/GoverningLaw'
+        - description: Jurisdiction (country, county, state, province, city) of the
+            issue. Mandatory.
+      guarantor:
+        type: string
+        description: 'Legal entity, other than the issuer, who gives guaranty, e.g.,
+          the guarantor becomes liable in case of default. Mandatory if a guarantor
+          is required on the trade.
+
+          '
+      increment:
+        type: integer
+        description: 'The smallest amount by which the min_denom_notional is allowed
+          to be increased. Mandatory where an increment is required.
+
+          '
+      interest_commencement_date:
+        type: string
+        format: date
+        description: 'Date on which the first interest accrual period begins. This
+          is typically the settlement date, except for tap issuance where it is the
+          interest payment date on the mother code security prior to the settlement
+          of the tap tranche being issued. ISO 8601 date format YYYY-MM-DD. Mandatory.
+
+          '
+      isin_code:
+        type: string
+        pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
+        description: 'A 12-digit security identification code (ISO 6166) comprised
+          of a 2-digit ISO 3166 country code, a 9-digit national number (e.g. cusip)
+          and a 1-digit ''check number''.
+
+          '
+      issuance_type:
+        allOf:
+        - $ref: '#/definitions/IssuanceType'
+        description: 'Indicates whether the securities are being issued under a programme
+          or on a standalone basis. Mandatory.
+
+          '
+      issue_price:
+        type: number
+        format: float
+        description: 'The issuance (i.e. closing date) issue price of the security
+          expressed in percentage. Mandatory.
+
+          '
+      issuer:
+        type: string
+        description: 'The name of the entity issuing the securities. Mandatory.
+
+          '
+      issuer_call_notice_period_days_type:
+        allOf:
+        - $ref: '#/definitions/IssuerCallNoticePeriodDayType'
+        description: 'Indicates whether the securities are being issued under a programme
+          or on a standalone basis. Mandatory.
+
+          '
+      issuer_call_notice_period_min:
+        type: integer
+        description: 'Notice period which the option holder is required to give the
+          counterparty before redemptin in whole business days. Mandatory if an issuer
+          call is applicable.
+
+          '
+      issuer_call_optional_redemption_price:
+        type: number
+        format: float
+        description: Price at which the bond will be redeemed if the call option is
+          exercised. Mandatory if an issuer call is applicable and the optional redemption
+          value is to be expressed as a price.
+      issuer_call_optional_redemption_dates:
+        type: array
+        items:
+          type: string
+          format: date
+        description: Date(s) on which the call option on the bond can be exercised
+          by the issuer. ISO 8601 date format YYYY-MM-DD. Mandatory if an issuer call
+          is applicable.
+      issuer_clearing:
+        allOf:
+        - $ref: '#/definitions/ClearingSystem'
+        - description: Clearing system used by the issuer for the receipt of funds.
+            Mandatory.
+      issuer_clearing_account:
+        type: string
+        description: 'Clearing system account 5 digit number used by the issuer for
+          the receipt of funds. Mandatory.
+
+          '
+      issuer_lei:
+        type: string
+        pattern: ^[0-9A-Z]{18}[0-9]{2}$
+        description: 'ISO 17442 Legal Entity Identifier code for the issuing entity.
+          Mandatory.
+
+          '
+      issuing_and_paying_agent:
+        type: string
+        description: 'An agent appointed by the issuer to issue securities to the
+          market and receive corresponding payments, if applicable, from the Dealer
+          on the Issue Date. Mandatory.
+
+          '
+      listing_date:
+        type: string
+        format: date
+        description: 'Date on which the bonds are intended to be listed (typically
+          the settlement date but may be different). ISO 8601 date format YYYY-MM-DD.
+          Mandatory if listing is required.
+
+          '
+      listing_exchanges:
+        type: array
+        items:
+          type: string
+          allOf:
+          - $ref: '#/definitions/ListingExchange'
+          - description: Exchange where the bonds are to be listed. Mandatory if listing
+              is required.
+      listing_exchange_market_type:
+        allOf:
+        - $ref: '#/definitions/ListingExchangeMarketType'
+        - description: 'The market of the exchange where the bond is to be listed.
+            Mandatory if a listing exchange is required, but will default to ''Regulated
+            Market'' if not provided.
+
+            '
+      maturity_date:
+        type: string
+        format: date
+        description: 'Planned final repayment date known at the time of issuance.
+          ISO 8601 date format YYYY-MM-DD. Mandatory for all issues which are not
+          perpetual.
+
+          '
+      method_of_distribution:
+        allOf:
+        - $ref: '#/definitions/MethodOfDistribution'
+        - description: 'The way in which the issue will be marketed to the primary
+            market, via individual dealers (so called non syndicated distribution)
+            or via a syndicate of managers, underwriters and selling group members
+            (so called syndicated distribution). Mandatory.
+
+            '
+      min_denom:
+        type: integer
+        description: 'The minimum amount of the security that can be transferred.
+          Mandatory.
+
+          '
+      net_proceeds:
+        type: number
+        format: float
+        description: 'The proceeds of the transaction due to the issuer on the settlement
+          date. Mandatory.
+
+          '
+      payment_frequency:
+        allOf:
+        - $ref: '#/definitions/PaymentFrequency'
+        - description: 'Specifies the frequency of the interest payments. Mandatory
+            for all except Zero Coupon bonds.
+
+            '
+      perpetual:
+        type: boolean
+        description: 'Whether the securities have a maturity date or are issued in
+          perpetual form. Mandatory.
+
+          '
+      private_placement:
+        type: boolean
+        description: 'Indicates whether the issuance is a private placement or not.
+          Mandatory.
+
+          '
+      programme_description:
+        type: string
+        description: Description of programme as appearing on cover page. Mandatory.
+      programme_base_prospectus_date:
+        type: string
+        format: date
+        description: 'The data on which the programme base prospectus is finalized.
+          ISO 8601 date format YYYY-MM-DD. Mandatory.
+
+          '
+      programme_epim_id:
+        type: string
+        description: '10 digit code programme number related to the security. Each
+          Issuer on Programme Documentation has a Programme Number allocated. Mandatory.
+
+          '
+      programme_limit:
+        type: integer
+        description: 'Used to identify the programme. The maximum amount to be issued
+          off the programme. Unlimited programmes are denoted by a zero value. Mandatory.
+
+          '
+      programme_type:
+        allOf:
+        - $ref: '#/definitions/Documentation'
+        - description: Indicates the type of programme associated with the issuance.
+            Mandatory for programme issuance.
+      redemption_price:
+        type: number
+        format: float
+        description: 'Code used to specify the percentage or price payable per denomination,
+          i.e. at par, above par or below par. Expressed in % for issues in Nominal
+          form, in Amount for issues in Unit form. Mandatory.
+
+          '
+      redemption_type:
+        allOf:
+        - $ref: '#/definitions/RedemptionType'
+        - description: 'Indicates the type of redemption (at maturity , final redemption,
+            before maturity , partial redemption, call or put). Mandatory.
+
+            '
+      redemption_type_iso:
+        allOf:
+        - $ref: '#/definitions/RedemptionTypeISO'
+        - description: 'ISO 20022 MaturityRedemptionType1Code code which indicates
+            the type of redemption (Final Redemption, Partial Redemption without reduction,
+            Partial Redemption with reduction, Drawing at random, Drawing pro-rata,
+            Call, Put). Mandatory.
+
+            '
+      registrar:
+        type: string
+        description: 'An entity appointed by the Issuer to maintain the register of
+          holders where notes are in registered form. Mandatory for Registered Notes.
+
+          '
+      security_name:
+        type: string
+        description: 'Description of the financial instrument. "currency_notional+size+coupon_type+status_of_the_notes''
+          Notes". Mandatory.
+
+          '
+      sedol_code:
+        type: string
+        pattern: ^[0-9A-Z]{7}$
+        description: 'Unique seven-character alphanumeric identifiers assigned to
+          securities that trade on the London Stock Exchange and other smaller exchanges
+          in the United Kingdom. SEDOL codes have a unique checksum character assigned
+          at the end. The seventh digit is a weighted sum of the first six characters.
+
+          '
+      selling_restrictions:
+        allOf:
+        - $ref: '#/definitions/SellingRestrictions'
+        - description: 'Requirements on the Issuer/Manager/Noteholders on the selling
+            of the securities in the market. Mandatory.
+
+            '
+      series_number:
+        type: string
+        description: 'Identifies the series number. Mandatory if the issuer uses series
+          numbers.
+
+          '
+      series_size:
+        type: integer
+        description: 'For fungible issues, identifies the total nominal amount of
+          the issued securities after inclusion of the tranche being issued. For non-fungible
+          issues this is the tranche total nominal amount. Mandatory for MTN issuance.
+
+          '
+      settlement_date:
+        type: string
+        format: date
+        description: "The date on which issue\u2019s proceeds are paid to the issuer\
+          \ and securities are created and distributed to investors (primary distribution/settlement).\
+          \ ISO 8601 date format YYYY-MM-DD. Mandatory.\n"
+      size:
+        type: integer
+        description: 'Total nominal amount of the tranche issued. Mandatory.
+
+          '
+      seniority:
+        allOf:
+        - $ref: '#/definitions/Seniority'
+        - description: 'Seniority of the bond. Mandatory.
+
+            '
+      status_of_the_notes:
+        allOf:
+        - $ref: '#/definitions/ProductType'
+        - description: 'Indicates the seniority of the notes (included alongside seniority
+            as it enables the differentiation beween Senior Preferred/Senior Non-Preferred).
+            Mandatory.
+
+            '
+      taps_funge_date:
+        type: string
+        format: date
+        description: 'Date on which the daughter code will funge with the mother code.
+          ISO 8601 date format YYYY-MM-DD. Mandatory for tap issuances which do not
+          funge immediately.
+
+          '
+      taps_fungible_issue_required:
+        type: boolean
+        description: 'It indicates if the security (daughter code) is to be fungible
+          with an original tranche (mother code). Mandatory.
+
+          '
+      tefra_category:
+        allOf:
+        - $ref: '#/definitions/TefraCategoryISO'
+        - description: Indicates the TEFRA rule under which the security is issued.
+            This uses the ISO 20022 code where TEFRA category is C or D. If a TEFRA
+            category is not explicitly mentioned, this will be defaulted to NOT_APP.
+            Mandatory.
+      temporary_common_code:
+        type: string
+        pattern: ^[0-9A-Z]{9}$
+        description: 'For fungible issues, the daughter code of the tranche which
+          is to funge with the mother code. 9 digit numeric code. Mandatory if the
+          trade is a tap issuance and the notes are not immediately fungible.
+
+          '
+      temporary_isin_code:
+        type: string
+        pattern: ^[A-Z]{2}[0-9A-Z]{9}[0-9]$
+        description: 'For fungible issues, the daughter code of the tranche which
+          is to funge with the mother code. 12 digit alpha-numeric code; 2 alpha +
+          10 numeric. Mandatory if the trade is a tap issuance and the notes are not
+          immediately fungible.
+
+          '
+      trade_date:
+        type: string
+        format: date
+        description: 'Date on which the transaction was executed for private placements;
+          pricing date for benchmark transactions. ISO 8601 date format YYYY-MM-DD.
+          Mandatory.
+
+          '
+      trading_method:
+        allOf:
+        - $ref: '#/definitions/TradingMethod'
+        - description: 'Indicates whether the notional amount value is to be traded
+            in either an amount or a unit. Mandatory.
+
+            '
+      tranche_number:
+        type: string
+        description: 'Indicates the number of the tranche. Mandatory if the issuer
+          uses tranche numbers.
+
+          '
+      valoren_code:
+        type: string
+        pattern: ^[0-9]{6,9}$
+        description: 'VALOR number is a code which uniquely identifies listed securities
+          and financial instruments in Switzerland.
+
+          '
+      witholding_tax_regime:
+        type: string
+        description: 'Indicates the default tax-withholding treatment (the applicable
+          law) or the gross-up clause. Mandatory.
+
+          '
+      wkn_code:
+        type: string
+        pattern: ^[0-9A-HJ-NP-Z]{6}$
+        description: 'German six-digit alphanumerical code for the identification
+          of a security
+
+          '
+      zero_amortization_yield:
+        type: number
+        format: float
+        description: 'Rate used to calculate the Amortised Nominal Amount or inferred
+          from the Amortised Nominal amount compared to the par value of a Zero Coupon
+          Note. Mandatory for Zero Coupon bonds.
+
+          '
+      zero_day_count_fraction:
+        allOf:
+        - $ref: '#/definitions/DayCountConvention'
+        - description: 'Specifies the computation method of (accrued) interest of
+            a zero coupon rate security. Mandatory for zero coupon notes.
+
+            '
+      zero_day_count_fraction_iso:
+        allOf:
+        - $ref: '#/definitions/DayCountConventionISO'
+        - description: 'ISO 20022 reference codes associated with the zero_day_count_fraction
+            field. Where an ISO code is not available for a specific day count fraction,
+            we will return "OTHR" - please see zero_day_count_fraction. Mandatory
+            for zero coupon notes.
+
+            '
+    example:
+      coupon_type: Fixed Rate
+      coupon_type_iso: FIXD
+      taps_fungible_issue_required: false
+      annual_interest_payment_dates:
+      - 02-10
+      interest_commencement_date: '2021-02-10'
+      payment_frequency: Annually
+      business_days_for_payment:
+      - TARGET2
+      business_days_for_payment_iso:
+      - OTHR
+      global_note_type: CGN
+      currency_notional: EUR
+      method_of_distribution: Non-syndicated
+      broken_initial_stub_type: None
+      broken_last_stub_type: None
+      dealers:
+      - Dealer X
+      delivery: Delivery versus payment
+      documentation: EMTN
+      programme_type: EMTN
+      fixed_business_day_convention: Following
+      fixed_business_day_convention_iso: FWNG
+      fixed_coupon_amount: '3000'
+      fixed_coupon_rate: '3.0000'
+      fixed_day_count_fraction: Actual/Actual (ICMA)
+      fixed_day_count_fraction_iso: A006
+      fixed_business_day_adjustment: Unadjusted
+      form_of_the_notes: Dematerialised Bearer
+      governing_law: French
+      isin_code: XS1234567890
+      issue_price: '100.000000'
+      issuer: Issuer Y
+      issuer_lei: XXXXXXXXXXXXXXXXXXXX
+      issuer_clearing: Clearstream
+      issuer_clearing_account: ''
+      dealer_clearing: Clearstream
+      dealer_clearing_account: ''
+      clearing_system: Euroclear/Clearstream
+      issuing_and_paying_agent: IPA Z
+      listing_date: '2021-02-10'
+      listing_exchanges:
+      - Luxembourg Stock Exchange
+      listing_exchange_market_type: RMKT
+      maturity_date: '2031-02-10'
+      min_denom: 100000
+      net_proceeds: '100000000.00'
+      private_placement: true
+      programme_description: EMTN (EUR 25.00bn updated 31-Oct-2020)
+      programme_base_prospectus_date: '2020-10-31'
+      programme_epim_id: XXXXX
+      programme_limit: 25000000000
+      programme_currency: EUR
+      redemption_price: '100.00000'
+      redemption_type: Final Redemption
+      redemption_type_iso: FRED
+      security_name: EUR 100000000 Fixed Rate Senior Preferred EMTN due on 2031-02-10
+      selling_restrictions: Reg S
+      series_number: '123'
+      series_size: 100000000
+      settlement_date: '2021-02-10'
+      size: 100000000
+      status_of_the_notes: Senior Preferred
+      seniority: SNBD
+      tefra_category: NOT_APP
+      trade_date: '2021-02-03'
+      tranche_number: '1'
+      accrual_quotation_type: CLEAN
+      issuance_type: BPRO
+      perpetual: false
+      trading_method: FMT
+      common_code: '123456789'
+  FloatingBasisType:
+    type: string
+    enum:
+    - Term Rate
+    - Overnight Rate
+  FloatingOvernightObservationMethod:
+    type: string
+    enum:
+    - Observation Shift
+    - Lag
+    - Lock-out
+    - Payment Delay
+  BusinessDayConvention:
+    type: string
+    enum:
+    - Following
+    - Preceding
+    - Modified Following
+    - Modified Preceding
+    - Half Month Modified Following
+  MethodOfDistribution:
+    type: string
+    enum:
+    - SYND
+    - NSYN
+  Delivery:
+    type: string
+    enum:
+    - Delivery versus payment
+    - Delivery free of payment
+  FinalStubType:
+    type: string
+    enum:
+    - Short Last
+    - Long Last
+    - None
+  TefraCategoryISO:
+    type: string
+    enum:
+    - NOT_APP
+    - RULC
+    - RULD
+  InitialStubType:
+    type: string
+    enum:
+    - Short First
+    - Long First
+    - None
+  AccrualQuotationType:
+    type: string
+    enum:
+    - CLEAN
+    - DIRTY
+    - NOT_APP
+  FloatingInterestDeterminationManner:
+    type: string
+    enum:
+    - Screen Rate Determination
+    - ISDA Determination
+  FloatingInterestFixingReferenceDate:
+    type: string
+    enum:
+    - Interest Period Starting Date
+    - Interest Payment Date
+    - Interest Period End Date
+    - Maturity Date
+  FloatingRelevantBenchmarkBaseISO:
+    type: string
+    enum:
+    - SOFR
+    - NIBO
+    - OTHR
+    - EURI
+    - PRBO
+    - STBO
+    - SONA
+    - JIBA
+    - ESTR
+    - BBSW
+    - HKIO
+    - LIBO
+    - CDOR
+  BusinessDayConventionISO:
+    type: string
+    enum:
+    - FWNG
+    - MODF
+    - PREC
+    - NEAR
+    - OTHR
+  FormOfTheNotesInitialPhysicalForm:
+    type: string
+    enum:
+    - Temporary Global Note
+    - Permanent Global Note
+    - Definitive Note
+  BusinessDayAdjustmentType:
+    type: string
+    enum:
+    - Adjusted
+    - Unadjusted
+  SellingRestrictions:
+    type: string
+    enum:
+    - 3 (c) 7
+    - Reg S
+    - 144A
+    - RLS
+  FloatingRelevantBenchmarkBase:
+    type: string
+    enum:
+    - value=SOFR, label=SOFR, iso=SOFR
+    - "value=\u20ACSTR, label=\u20ACSTR, iso=ESTR"
+    - value=HIBOR, label=HIBOR, iso=HKIO
+    - value=PRIBOR, label=PRIBOR, iso=PRBO
+    - value=SIBOR, label=SIBOR, iso=
+    - value=STIBOR, label=STIBOR, iso=STBO
+    - value=LIBOR, label=LIBOR, iso=LIBO
+    - value=NIBOR, label=NIBOR, iso=NIBO
+    - value=JIBAR, label=JIBAR, iso=JIBA
+    - value=SONIA, label=SONIA, iso=SONA
+    - value=EURIBOR, label=EURIBOR, iso=EURI
+    - value=Bank Bill Rate, label=Bank Bill Rate, iso=
+    - value=BBSW, label=BBSW, iso=BBSW
+    - value=CAD-BA-CDOR, label=CAD-BA-CDOR, iso=CDOR
+  FinancialCentreISO:
+    type: string
+    enum:
+    - PAPC
+    - NLAM
+    - ARBA
+    - CNBE
+    - DKCO
+    - RUMO
+    - USNY
+    - SGSI
+    - MYKL
+    - TRAN
+    - PLWA
+    - CZPR
+    - FRPA
+    - CAMO
+    - CHZU
+    - SEST
+    - USCH
+    - OTHR
+    - AUME
+    - BRSP
+    - USGS
+    - KRSE
+    - DEFR
+    - TWTA
+    - ITRO
+    - CHGE
+    - NZAU
+    - SKBR
+    - GRAT
+    - SARI
+    - AUSY
+    - IDJA
+    - IEDU
+    - ZAJO
+    - HKHK
+    - GBLO
+    - ESMA
+    - NZWE
+    - ITMI
+    - FIHE
+    - NOOS
+    - ATVI
+    - HUBU
+    - ILTA
+    - CLSA
+    - EETA
+    - LBBE
+    - THBA
+    - JPTO
+    - PHMA
+    - BEBR
+    - CATO
+    - PTLI
+    - LULU
+    - MXMC
+  CouponTypeISO:
+    type: string
+    enum:
+    - FIXD
+    - FLRN
+    - ZCPN
+  ProductType:
+    type: string
+    enum:
+    - Senior Unsecured
+    - Senior Preferred
+    - Senior Non Preferred
+    - Senior Secured
+    - Covered Bonds
+    - Lower Tier 2
+  RedemptionTypeISO:
+    type: string
+    enum:
+    - FRED
+    - PRNR
+    - PRWR
+    - RNDM
+    - PRRA
+    - CALL
+    - PUUT
+  FinancialCentre:
+    type: string
+    enum:
+    - Abidjan
+    - Abu Dhabi
+    - Accra
+    - Adamstown
+    - Addis Ababa
+    - Adelaide
+    - Ahmedabad
+    - Algiers
+    - Almaty
+    - Alofi
+    - Amman
+    - Amsterdam
+    - Andorra-la-vella
+    - Ankara
+    - Antananarivo
+    - Antwerp
+    - Apia
+    - Arlandastad
+    - Ashgabat
+    - Asmara
+    - Astana
+    - Asuncion
+    - Athens
+    - Auckland
+    - Bacolod
+    - Baghdad
+    - Baku
+    - Bamako
+    - Bandar Seri Begawan
+    - Bangalore
+    - Bangkok
+    - Bangui
+    - Banja Luka
+    - Banjul
+    - Barcelona
+    - Basle
+    - Basseterre
+    - Beijing
+    - Beirut
+    - Belfast
+    - Belgrade
+    - Belize City
+    - Belmopan
+    - Belo Horizonte
+    - Berlin
+    - Berne
+    - Bhubaneswar
+    - Bilbao
+    - Bishkek
+    - Bissau
+    - Bogota
+    - Boston
+    - Brades
+    - Brasilia Fed Dist
+    - Bratislava
+    - Brazzaville
+    - Bremen
+    - Bridgetown
+    - Brisbane
+    - Brussels
+    - Bucaramanga
+    - Bucharest
+    - Budapest
+    - Buenos Aires
+    - Bujumbura
+    - Cairo
+    - Calgary
+    - Cali
+    - Campinas
+    - Canberra
+    - Cape Town
+    - Caracas
+    - Cardiff
+    - Casablanca
+    - Castries
+    - Catania
+    - Cayenne
+    - Charlotte Amalie
+    - Chennai (Madras)
+    - Chicago
+    - Chisinau
+    - Chittagong
+    - Christchurch
+    - Cockburn Town
+    - Cologne
+    - Colombo
+    - Conakry
+    - Copenhagen
+    - Cotonou
+    - Dakar
+    - Damascus
+    - Dar es Salaam
+    - Darwin
+    - Des Moines
+    - Dhaka
+    - Dharwad
+    - Dili
+    - Djibouti
+    - Dnipro
+    - Dodoma
+    - Doha
+    - Douala
+    - Douglas
+    - Dubai
+    - Dublin
+    - Dunedin
+    - Dushanbe
+    - Dusseldorf
+    - Edinburgh
+    - Edmonton
+    - Ekaterinburg
+    - El Aaiun
+    - Essen
+    - Fongafale (Funafuti)
+    - Fort-de-France
+    - Frankfurt
+    - Fredericton
+    - Freetown
+    - Fribourg
+    - Fukuoka
+    - Gaborone
+    - Geneva
+    - George Town
+    - Georgetown
+    - Gibraltar
+    - Glasgow
+    - Granada
+    - Gravatai
+    - Guangzhou
+    - Guatemala
+    - Gurgaon
+    - Gustavia
+    - Hagatna
+    - Haikou
+    - Halifax
+    - Hamburg
+    - Hamilton
+    - Hanoi
+    - Hanover
+    - Harare
+    - Havana
+    - Helsinki
+    - Ho Chi Minh City
+    - Hobart
+    - Hong Kong
+    - Honiara
+    - Hyderabad
+    - Iloilo
+    - Islamabad
+    - Istanbul
+    - Itziar (Deba)
+    - Jaen
+    - Jakarta
+    - Jamestown
+    - Jeddah
+    - Jerusalem
+    - Jinan
+    - Johannesburg
+    - Juba
+    - Kabul
+    - Kampala
+    - Kanpur
+    - Kansas City
+    - Karachi
+    - Kathmandu
+    - Khartoum
+    - Kiel
+    - Kiev
+    - Kigali
+    - Kingston
+    - Kingston (Norfolk Island)
+    - Kingstown
+    - Kinshasa
+    - Kolkata
+    - Kongsvinger
+    - Koror
+    - Kralendijk (Bonaire)
+    - Krasnoyarsk
+    - Kuala Lumpur
+    - Kuching
+    - Kuwait
+    - La Libertad
+    - Labuan
+    - Lages
+    - Lagos
+    - Lahore
+    - LaPaz
+    - Las Palmas (Canarias)
+    - Leeds
+    - Libreville
+    - Lilongwe
+    - Lima
+    - Lisbon
+    - Ljubljana
+    - Lome
+    - London
+    - Luanda
+    - Lugano
+    - Lusaka
+    - Luxembourg
+    - Macau
+    - Madrid
+    - Magdeburg
+    - Mainz
+    - Majuro
+    - Makati City
+    - Malabo
+    - Male
+    - Mamoudzou
+    - Managua
+    - Manama
+    - Manila
+    - Maputo
+    - Mariehamn
+    - Marigot
+    - Maseru
+    - Mata-Utu
+    - Matara
+    - Mbabane
+    - Medellin
+    - Melbourne
+    - Mendoza
+    - Mexico City
+    - Milan
+    - Minsk
+    - Mogadishu
+    - Monaco
+    - Monrovia
+    - Montevideo
+    - Montreal
+    - Moroni
+    - Moscow
+    - Mumbai
+    - Munich
+    - Murmansk
+    - Muscat
+    - N&#x27;Djamena
+    - Nablus
+    - Nagoya
+    - Nairobi
+    - Namur
+    - Naples
+    - Nassau
+    - New Delhi
+    - New York
+    - Niamey
+    - Nicosia
+    - Niteroi
+    - Nouakchott
+    - Noumea
+    - Novosibirsk
+    - Nuku&#x27;alofa
+    - Nuuk
+    - Oranjestad
+    - Oranjestad (Sint Eustatius)
+    - Osaka
+    - Oslo
+    - Ottawa
+    - Ouagudougou
+    - Pago Pago
+    - Palikir
+    - Palma de Mallorca
+    - Pamplona
+    - Panama City
+    - Pangkalpinang
+    - Papeete
+    - Paramaribo
+    - Paris
+    - Pasay City
+    - Pasig City
+    - Perth
+    - Philadelphia
+    - Philipsburg
+    - Phnom Penh
+    - Phoenix
+    - Podgorica
+    - Point-a-Pitre
+    - Ponta Delgada
+    - Popayan
+    - Port Louis
+    - Port Moresby
+    - Port of Spain
+    - Port Vila
+    - Port-au-Prince
+    - Porto Alegre
+    - Prague
+    - Praia
+    - Pretoria
+    - Pune
+    - Pyongyang
+    - Quebec City
+    - Quezon City
+    - Quito
+    - Rabat
+    - Rarotonga
+    - Ras al-Khaimah
+    - Recife
+    - Regina
+    - Reykjavik
+    - Ribeirao Preto
+    - Riga
+    - Rio de Janeiro
+    - Riyadh
+    - Road Town
+    - Rockhampton
+    - Rome
+    - Rosario
+    - Roseau
+    - Rostov
+    - Rostov-na-Donu
+    - Rotterdam
+    - Rudrapur
+    - Ruwi
+    - Saarbrucken
+    - Saint John&#x27;s
+    - Saint-Denis
+    - Saint-Pierre
+    - Saipan
+    - Salt Lake City
+    - Samara
+    - San Francisco
+    - San Jose
+    - San Juan
+    - San Marino
+    - San Salvador
+    - San Sebastian
+    - Sana&#x27;a
+    - Santa Cruz
+    - Santa Cruz (Canarias)
+    - Santiago
+    - Santo Domingo
+    - Sao Paulo
+    - Sao Tome
+    - Sapporo
+    - Sarajevo
+    - Seoul
+    - Sepang
+    - Seville
+    - Shanghai
+    - Shenzhen
+    - Sibiu
+    - Singapore
+    - Skopje
+    - Sofia
+    - St. George&#x27;s
+    - St. Helier
+    - St. John&#x27;s
+    - St. Peter Port
+    - St. Petersburg
+    - Stanley
+    - Stockholm
+    - Stuttgart
+    - Surat
+    - Suva
+    - Sydney
+    - Taguig City
+    - Taipei
+    - Tallinn
+    - Tangerang
+    - Tarawa
+    - TARGET2
+    - Tashkent
+    - Tbilisi
+    - Tegucigalpa
+    - Tehran
+    - Tel Aviv
+    - The Bottom (Saba)
+    - The Hague
+    - The Settlement
+    - The Valley
+    - Thimphu
+    - Tirana
+    - Tiruchirapalli
+    - Tokyo
+    - Toronto
+    - Torshavn
+    - Tripoli
+    - Tunis
+    - Turin
+    - U.S. Government Securities
+    - Ulaanbaatar
+    - Utrecht
+    - Vaduz
+    - Valencia
+    - Valletta
+    - Vancouver
+    - Vatican City
+    - Verona
+    - Victoria
+    - Vienna
+    - Vienna (USA)
+    - Vientiane
+    - Vilnius
+    - Vladivostok
+    - Warsaw
+    - Wellington
+    - West Bank
+    - West Island
+    - Willemstad
+    - Windhoek
+    - Winnipeg
+    - Yamoussoukro
+    - Yangon
+    - Yaounde
+    - Yaren
+    - Yerevan
+    - Zagreb
+    - Zaragoza
+    - Zizur Mayor
+    - Zug
+    - Zurich
+  FloatingBasisTermPeriod:
+    type: string
+    enum:
+    - DAYS
+    - WEEK
+    - MNTH
+    - YEAR
+  IssuerCallNoticePeriodDayType:
+    type: string
+    enum:
+    - Business Days
+    - Calendar Days
+  ClearingSystem:
+    type: string
+    enum:
+    - Euroclear/Clearstream
+    - Euroclear France
+    - CMU
+    - CMU with link to Euroclear/Clearstream
+    - VPS
+    - Clearstream Luxembourg
+    - Euroclear Belgium
+    - Euroclear Netherlands
+    - OeKB CSD GmbH
+    - DTCC
+    - Clearstream Banking Frankfurt
+    - National Bank of Belgium
+    - Iberclear
+  FundingBasis:
+    description: The funding basis.
+    type: string
+    enum:
+    - "\u20ACSTR"
+    - 3mEURIBOR
+    - 6mEURIBOR
+    - EUR Fixed
+    - EUR M/S
+    - SOFR
+    - 3mUSD-LIBOR
+    - 6mUSD-LIBOR
+    - USD Fixed
+    - USD M/S
+    - SONIA
+    - 3mGBP-LIBOR
+    - 6mGBP-LIBOR
+    - GBP Fixed
+    - GBP M/S
+    - 3mJPY-LIBOR
+    - 6mJPY-LIBOR
+    - JPY Fixed
+    - JPY M/S
+    - 3mCHF-LIBOR
+    - 6mCHF-LIBOR
+    - CHF Fixed
+    - CHF M/S
+    - 3mBBSW
+    - 6mBBSW
+    - AUD Fixed
+    - AUD M/S
+    - 3mSTIBOR
+    - SEK Fixed
+    - SEK M/S
+    - 3mNIBOR
+    - 6mNIBOR
+    - NOK Fixed
+    - NOK M/S
+    - 3mCAD-BA-CDOR
+    - CAD Fixed
+    - CAD M/S
+    - 3mNZD-BB
+    - NZD Fixed
+    - NZD M/S
+    - 3mHIBOR
+    - 6mHIBOR
+    - HKD Fixed
+    - 3mSIBOR
+    - 6mSIBOR
+    - SGD Fixed
+    - CNH Fixed
+    - CNY Fixed
+    - KRW Fixed
+    - 3mPRIBOR
+    - 6mPRIBOR
+    - CZK Fixed
+    - 3mJIBAR
+    - 6mJIBAR
+    - ZAR Fixed
+    - RON Fixed
+    - RUB Fixed
+    - CLP Fixed
+    - AED Fixed
+    - AMD Fixed
+    - ARS Fixed
+    - BRL Fixed
+    - COP Fixed
+    - DKK Fixed
+    - EEK Fixed
+    - GEL Fixed
+    - HUF Fixed
+    - IDR Fixed
+    - INR Fixed
+    - ISK Fixed
+    - KGS Fixed
+    - KZT Fixed
+    - MXN Fixed
+    - MYR Fixed
+    - NTD Fixed
+    - PEN Fixed
+    - PHP Fixed
+    - PLN Fixed
+    - QAR Fixed
+    - RSD Fixed
+    - SKK Fixed
+    - TRY Fixed
+    - UAH Fixed
+    - UYU Fixed
+    - UZS Fixed
+    - VND Fixed
+    - ZMK Fixed
+    - UST
+    - BTP
+    - OAT
+    - OLO
+    - RAGB
+    - SPGB
+  FloatingOvernightDeterminationMethod:
+    type: string
+    enum:
+    - Index Determination
+    - Non-Index (Calculated) Determination
+  Seniority:
+    type: string
+    enum:
+    - SNDB
+    - MZZD
+    - SBOD
+    - JUND
+  TradingMethod:
+    type: string
+    enum:
+    - FMT
+    - UNT
+  GlobalNoteType:
+    type: string
+    enum:
+    - CGN
+    - NGN
+  FormOfTheNote:
+    type: string
+    enum:
+    - Bearer
+    - Book-entry
+    - Collective Debt Register Claim
+    - Dematerialised
+    - Dematerialised Bearer
+    - Dematerialised Book-Entry
+    - Dematerialised Registered
+    - Fed Bookentry
+    - Materialised Bearer
+    - Materialised Registered
+    - Registered
+    - RO
+    - SDO
+    - Uncertificated Dematerialised Book-Entry
+    - Uncertified
+    - Uncertified Dematerialised Book-Entry
+    - VPS
+  GoverningLaw:
+    type: string
+    enum:
+    - Australian Capital Territory, Australia
+    - Austrian
+    - Belgian
+    - Cayman Islands
+    - Croatian
+    - Czech
+    - Danish
+    - Dutch
+    - English
+    - Federal Republic of Germany
+    - Finnish
+    - French
+    - German
+    - Hong Kong
+    - Icelandic
+    - Indian
+    - Irish
+    - Italian
+    - Japanese
+    - Jersey
+    - Korean
+    - Luxembourg
+    - Malaysian
+    - New South Wales, Australia
+    - New York
+    - New Zealand
+    - Norwegian
+    - Polish
+    - Portuguese
+    - Province of Alberta
+    - Province of British Columbia
+    - Province of Manitoba
+    - Province of Ontario
+    - "Province of Que\u0301bec"
+    - Qatari
+    - Romanian
+    - Scots
+    - Singapore
+    - Slovakian
+    - South African
+    - Spanish
+    - State of Victoria, Australia
+    - Swedish
+    - Swiss
+    - The Republic of Italy
+    - Turkish
+  IssuanceType:
+    type: string
+    enum:
+    - BPRO
+    - STDA
+  Currency:
+    type: string
+    enum:
+    - USD
+    - EUR
+    - GBP
+    - JPY
+    - CHF
+    - AUD
+    - NZD
+    - CAD
+    - SEK
+    - NOK
+    - HKD
+    - AED
+    - AMD
+    - ARS
+    - BRL
+    - CLP
+    - CNH
+    - CNY
+    - COP
+    - CZK
+    - DKK
+    - EEK
+    - GEL
+    - HUF
+    - IDR
+    - INR
+    - ISK
+    - KGS
+    - KRW
+    - KZT
+    - MXN
+    - MYR
+    - NTD
+    - PEN
+    - PHP
+    - PLN
+    - QAR
+    - RON
+    - RSD
+    - RUB
+    - SGD
+    - TRY
+    - UAH
+    - UYU
+    - UZS
+    - VND
+    - ZAR
+    - ZMK
+  RedemptionType:
+    type: string
+    enum:
+    - Final Redemption
+    - Partial Redemption without reduction
+    - Partial Redemption with reduction
+    - Drawing at random
+    - Drawing pro-rata
+    - Call
+    - Put
+  Documentation:
+    type: string
+    enum:
+    - GMTN
+    - EMTN
+    - GIP
+    - DIP
+    - NeuMTN
+    - DMTN
+    - OP
+    - EMTN &amp; CB
+    - GCIMTN &amp; CB
+    - CD
+    - ECD
+    - YCD
+    - DN
+    - GCP
+    - ECP
+    - USCP
+    - NEUCP
+    - TC
+    - CB
+    - GCB
+    - ECB
+    - GMTCN
+    - EMTCN
+    - GRCB
+    - GLCB
+    - NSV
+    - SSD
+    - RCB
+  ListingExchangeMarketType:
+    type: string
+    enum:
+    - RMKT
+    - MLTF
+  PaymentFrequency:
+    type: string
+    enum:
+    - At Maturity
+    - Quarterly
+    - Semi-Annually
+    - Annually
+  FormOfTheNotesAfterExchangePhysicalForm:
+    type: string
+    enum:
+    - Permanent Global Note
+    - Definitive Note
+  CouponType:
+    type: string
+    enum:
+    - Fixed Rate
+    - Floating Rate
+    - Zero Coupon
+  DayCountConventionISO:
+    type: string
+    enum:
+    - A001
+    - A005
+    - A009
+    - A006
+    - A014
+    - A004
+    - A008
+    - A007
+    - OTHR
+  DayCountConvention:
+    type: string
+    enum:
+    - 30/360
+    - 30E/360
+    - 30E/360 (ISDA)
+    - 360/360
+    - Actual/360
+    - Actual/365 (Fixed)
+    - Actual/365 (Sterling)
+    - Actual/Actual
+    - Actual/Actual (ICMA)
+    - Actual/Actual (ISDA)
+    - Bond Basis
+    - Eurobond Basis
+    - NL/365
+  ListingExchange:
+    type: string
+    enum:
+    - AIAF
+    - Australian Securities Exchange
+    - Baden-Wuerttemberg Stock Exchange
+    - Berlin Stock Exchange
+    - Cayman Stock Exchange
+    - Copenhagen Stock Exchange
+    - "Du\u0308sseldorf Stock Exchange"
+    - Euronext Amsterdam
+    - Euronext Brussels
+    - Euronext Dublin
+    - Euronext Lisbon
+    - Euronext Paris
+    - ExtraMOT
+    - Frankfurt Stock Exchange
+    - Hamburg Stock Exchange
+    - Hannover Stock Exchange
+    - Hong Kong Stock Exchange
+    - Indian International Exchange
+    - Johannesburg Stock Exchange
+    - Labuan International Financial Exchange
+    - London Stock Exchange
+    - Luxembourg Stock Exchange
+    - MARF
+    - Munich Stock Exchange
+    - Nasdaq Copenhagen A/S
+    - Nasdaq Dubai
+    - Nasdaq Helsinki
+    - Nasdaq Stockholm
+    - New Zealand Stock Exchange
+    - NOMX Stockholm
+    - Not listed
+    - Oslo Stock Exchange
+    - Singapore SGX
+    - SIX Swiss Exchange
+    - Stuttgart Stock Exchange
+    - Taipei Exchange
+    - Tokyo Stock Exchange
+    - Trace
+    - Vienna Stock Exchange
+    - Warsaw Stock Exchange
+  FloatingOvernightCalculationType:
+    type: string
+    enum:
+    - Compounded Daily
+    - Weighted Average
