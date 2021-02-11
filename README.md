@@ -8,6 +8,8 @@ Airbrush ensures that when communicating with one another, systems will send and
 
 Airbrush v1 was constructed by aligning the requirements of multiple market participants including Clearstream, the Luxembourg Stock Exchange and major paying agents.
 
+The enclosed .yaml file leverages the OpenApi Specification, enabling consumers to import the Airbrush data standard and generate a client in over 40 different languages including Java, Python and Scala.
+
 The Origin platform publishes all trade data according to Airbrush, more information can be found on the Orign API documentation page at: http://login2.originmarkets.com/api/trades/
 
 Please contact airbrush@originmarkets.com if you have any questions or feedback.
