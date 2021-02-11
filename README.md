@@ -1,2 +1,13 @@
 # Airbrush
-Airbrush is a universal data language for post-trade market participants, enabling straight through processing across the ecosystem by standardising data exchange, making communication more effective and the entire process more efficient, accurate and integrated, without needing to change internal systems
+Airbrush is an interface data standard for defining a new fixed income security.
+
+Airbrush determines the minimum set of data requirements to process a new issuance and proposes a standard naming convention for all parameters.
+Using the Airbrush standard replaces the need for multiple bilateral interfaces between market participants. Internal systems and databases do not need to be re-architected, and technology providers can use their own markup languages.
+
+Airbrush ensures that when communicating with one another, systems will send and receive the necessary set of parameters in a consistent format.
+
+Airbrush v1 was constructed by aligning the requirements of multiple market participants including Clearstream, the Luxembourg Stock Exchange and major paying agents.
+
+The Origin platform publishes all trade data according to Airbrush, more information can be found on the Orign API documentation page at: http://login2.originmarkets.com/api/trades/
+
+Please contact airbrush@originmarkets.com if you have any questions or feedback.
