@@ -1,0 +1,136 @@
+{
+    "agents": {
+        "issuing_and_paying_agent": {
+            "name": "Citibank N.A., London Branch"
+        }
+    },
+    "clearing": {
+        "clearing_system": "Euroclear/Clearstream"
+    },
+    "currency": {
+        "notional": "USD"
+    },
+    "dealers": [
+        {
+            "name": "Citibank Europe plc",
+            "country": "",
+            "role": "Sole Manager"
+        }
+    ],
+    "denominations": [
+        {
+            "min_denom": 200000
+        }
+    ],
+    "form": {
+        "form_of_the_notes": "Bearer",
+        "form_of_the_notes_after_exchange_physical_form": "Definitive Notes",
+        "form_of_the_notes_initial_physical_form": "Permanent Global Note"
+    },
+    "fungible": {
+        "fungibility_status": "Immediately fungible",
+        "taps_funge_date": "2021-06-24",
+        "new_total_size": 50000001,
+        "original_size": 1
+    },
+    "identifiers": {
+        "isin_code": "AB1234567890",
+        "common_code": "123456789"
+    },
+    "interest": {
+        "type": "Fixed Rate",
+        "type_iso": "FIXD",
+        "business_day_convention": "Following",
+        "business_day_convention_iso": "FWNG",
+        "day_count_fraction": "30/360",
+        "day_count_fraction_iso": "A001",
+        "business_day_adjustment": "Unadjusted",
+        "business_days_for_payment": [
+            "New York"
+        ],
+        "business_days_for_payment_iso": [
+            "USNY"
+        ],
+        "fixed_amount": "2000.00",
+        "fixed_rate": "1.0000",
+        "annual_interest_payment_dates": [
+            "06-25"
+        ],
+        "first_interest_payment_date": "2021-06-25",
+        "interest_commencement_date": "2021-06-24",
+        "payment_frequency": "Semi-Annually"
+    },
+    "issuers": [
+        {
+            "name": "Vasakronan AB (Publ)",
+            "country": "",
+            "ratings": [
+                {
+                    "agency": "Moodys",
+                    "value": "Aa1",
+                    "outlook": "stable"
+                }
+            ],
+            "lei": "5493007LNZSEWN5KTV42"
+        }
+    ],
+    "other_provisions": {},
+    "pricing": {
+        "issue_price": "100.000000",
+        "accrual_quotation_type": "CLEAN"
+    },
+    "product_governance": {
+        "mifid_manufacturers": [
+            "Citibank Europe plc"
+        ]
+    },
+    "programme": {
+        "name": "EMTN (EUR 6.00bn updated 09-Apr-2020)",
+        "type": "EMTN",
+        "base_prospectus_date": "2020-04-09",
+        "limit": 6000000000.0,
+        "currency": "EUR",
+        "id": "13730"
+    },
+    "redemption": {
+        "call_features": "None",
+        "redemption_type": "Final Redemption",
+        "redemption_type_iso": "FRED",
+        "redemption_price": "100.00000",
+        "perpetual": false,
+        "maturity_date": "2021-06-25",
+        "change_of_control_put_required": true,
+        "clean_up_call_redemption_amount": "75.00"
+    },
+    "listing": {
+        "listing_date": "2021-06-24",
+        "exchanges": [
+            "Euronext Dublin"
+        ],
+        "exchange_market_type": "RMKT"
+    },
+    "is_fungible": true,
+    "is_listed": false,
+    "method_of_distribution": "NSYN",
+    "initial_stub_type": "None",
+    "last_stub_type": "None",
+    "delivery": "Delivery versus payment",
+    "ecb_eligible": false,
+    "governing_law": "English",
+    "net_proceeds": "50000001.00",
+    "private_placement": true,
+    "status_of_the_notes": "Senior Unsecured",
+    "security_name": "Vasakronan AB (Publ) USD50,000,000 O/N Tap of 25-Jun-2021 Fixed Rate Senior Unsecured EMTN",
+    "security_type": "MTN",
+    "selling_restrictions": "Reg S",
+    "series_number": "5",
+    "series_size": 50000001,
+    "settlement_date": "2021-06-24",
+    "size": 50000000,
+    "seniority": "SNBD",
+    "tefra_category": "NOT_APP",
+    "tranche_number": "4",
+    "trade_date": "2021-06-17",
+    "issuance_type": "BPRO",
+    "trading_method": "FMT"
+}
