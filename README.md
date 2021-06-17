@@ -31,8 +31,16 @@ Python 3.x.x
 ```
 
 You should see an output as above with each `x` being a specific number depedning on the version of python
-that you downloaded. Once python is installed, download the project dependencies with the following
-command:
+that you downloaded. Once python is installed, clone the repo using [git](https://git-scm.com/) and change
+your working directory to the project:
+
+```sh
+$ git clone https://github.com/OriginMarkets/Airbrush.git
+$ cd Airbrush
+```
+
+Now that the repo is downloaded, get the project dependencies with the following
+[pip](https://www.python.org/downloads/) command:
 
 ```sh
 $ pip install requirements.txt
