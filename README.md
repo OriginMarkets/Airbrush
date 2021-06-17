@@ -26,24 +26,23 @@ tool to try out Airbrush is written in python. To make sure that this has worked
 and run:
 
 ```sh
-$ python -V
-Python 3.x.x
+python -V
 ```
 
-You should see an output as above with each `x` being a specific number depedning on the version of python
-that you downloaded. Once python is installed, clone the repo using [git](https://git-scm.com/) and change
-your working directory to the project:
+You should see an output of `Python 3.x.x` with each `x` being a specific number depending on the version of
+python that you downloaded. Once python is installed, clone the repo using [git](https://git-scm.com/) and
+change your working directory to the project:
 
 ```sh
-$ git clone https://github.com/OriginMarkets/Airbrush.git
-$ cd Airbrush
+git clone https://github.com/OriginMarkets/Airbrush.git
+cd Airbrush
 ```
 
 Now that the repo is downloaded, get the project dependencies with the following
 [pip](https://www.python.org/downloads/) command:
 
 ```sh
-$ pip install requirements.txt
+pip install -r requirements.txt
 ```
 
 This should download all the requirements you need to run the command line tool. You are now ready to use
