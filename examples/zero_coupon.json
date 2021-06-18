@@ -1,5 +1,8 @@
 {
    "agents":{
+      "calculation_agent":{
+         "name":"Citibank N.A., London Branch"
+      },
       "issuing_and_paying_agent":{
          "name":"Citibank N.A., London Branch"
       }
@@ -8,7 +11,7 @@
       "clearing_system":"Euroclear/Clearstream"
    },
    "currency":{
-      "notional":"EUR"
+      "notional":"USD"
    },
    "dealers":[
       {
@@ -20,7 +23,7 @@
    "delivery":"Delivery versus payment",
    "denominations":[
       {
-         "min_denom":100000
+         "min_denom":200000
       }
    ],
    "ecb_eligible":true,
@@ -34,29 +37,20 @@
       "isin_code":"XS1234567890"
    },
    "interest":{
-      "annual_interest_payment_dates":[
-         "06-25"
-      ],
-      "business_day_adjustment":"Unadjusted",
-      "business_day_convention":"Following",
-      "business_day_convention_iso":"FWNG",
+      "amortization_yield":"1.000000",
+      "business_day_adjustment":"Adjusted",
+      "business_day_convention":"Modified Following",
+      "business_day_convention_iso":"MODF",
       "business_days_for_payment":[
-         "TARGET2"
+         "New York"
       ],
       "business_days_for_payment_iso":[
-         "OTHR"
+         "USNY"
       ],
-      "day_count_fraction":"Actual/Actual (ICMA)",
-      "day_count_fraction_iso":"A006",
-      "first_interest_payment_date":"2022-06-25",
-      "fixed_amount":"1000.00",
-      "fixed_rate":"1.0000",
-      "initial_stub_type":"None",
-      "interest_commencement_date":"2021-06-25",
-      "last_stub_type":"None",
-      "payment_frequency":"Annually",
-      "type":"Fixed Rate",
-      "type_iso":"FIXD"
+      "day_count_fraction":"Actual/360",
+      "day_count_fraction_iso":"A004",
+      "type":"Zero Coupon",
+      "type_iso":"ZCPN"
    },
    "is_fungible":false,
    "is_listed":false,
@@ -64,8 +58,8 @@
    "issuers":[
       {
          "country":"SE",
-         "lei":"549300AA588N7RWKBP11",
-         "name":"Issuer 1",
+         "lei":"549300NQ588N7RWKBP98",
+         "name":"OP Corporate Bank plc",
          "ratings":[
             {
                "agency":"Fitch",
@@ -81,7 +75,7 @@
       }
    ],
    "listing":{
-      "date":"2021-06-25",
+      "date":"2021-06-28",
       "exchange_market_type":"RMKT",
       "exchanges":[
          "Euronext Dublin"
@@ -114,19 +108,19 @@
    "redemption":{
       "call_features":"None",
       "change_of_control_put_required":false,
-      "maturity_date":"2026-06-25",
+      "maturity_date":"2023-06-28",
       "perpetual":false,
       "price":"100.00000",
       "type":"Final Redemption",
       "type_iso":"FRED"
    },
-   "security_name":"Issuer 1 EUR50,000,000 5Y Fixed Rate Senior Preferred EMTN",
+   "security_name":"Issuer 1 USD50,000,000 2Y Zero Coupon Senior Preferred EMTN",
    "security_type":"MTN",
    "selling_restrictions":"Reg S",
    "seniority":"SNBD",
    "series_number":"12345",
    "series_size":50000000,
-   "settlement_date":"2021-06-25",
+   "settlement_date":"2021-06-28",
    "size":50000000,
    "status_of_the_notes":"Senior Preferred",
    "tefra_category":"RULD",
