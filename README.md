@@ -29,18 +29,18 @@ Airbrush works and using it within their own systems. The Origin Documentation p
 tools and we hope that by sharing them, we can encourage stronger collaboration and standardisation across
 the market.
 
- 1. [Airbrush OpenAPI Specification]("Airbrush v1.0.yaml"): The Airbrush data specification defined in a
+ 1. [Airbrush OpenAPI Specification](<Airbrush v1.0.yaml>): The Airbrush data specification defined in a
  yaml file that leverages the [OpenApi](https://www.openapis.org/) Specification, enabling consumers to
  import the data specification and generate a client in over 40 different languages including Java, Python
  and Scala. The Origin platform publishes all trade data according to Airbrush; more information can be
  found on the [Orign API documentation page](https://login2.originmarkets.com/api/trades/).
 
- 2. [Machine-Readable Termsheet Template]("Machine-Readable Termsheet.docx"): A machine-readable termsheet
+ 2. [Machine-Readable Termsheet Template](<Machine-Readable Termsheet.docx>): A machine-readable termsheet
  template created using the [Jinja](https://jinja.palletsprojects.com/en/3.0.x/) templating language. This
  template is open-source and free to use by all fixed-income market participants to foster
  standardisation of bond issuance documents.
 
- 3. [Human-Readable Termsheet Template]("Machine-Readable Termsheet.docx"): An equivalent version of the
+ 3. [Human-Readable Termsheet Template](<Human-Readable Termsheet.docx>): An equivalent version of the
  machine-readable template for easier reading.
 
  4. [Example Airbrush Outputs](./examples): A number of example issuances represented in the Airbrush
