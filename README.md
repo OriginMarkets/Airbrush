@@ -40,7 +40,7 @@ the market.
  template is open-source and free to use by all fixed-income market participants to foster
  standardisation of bond issuance documents.
 
- 3. [Human-Readable Termsheet Template](<Human-Readable Termsheet.docx>): An equivalent version of the
+ 3. [Standardised Termsheet Template](<Standardised Termsheet.docx>): An equivalent version of the
  machine-readable template for easier reading.
 
  4. [Example Airbrush Outputs](./examples): A number of example issuances represented in the Airbrush
