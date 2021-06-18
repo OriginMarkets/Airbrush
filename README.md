@@ -36,7 +36,7 @@ the market.
  found on the [Orign API documentation page](https://login2.originmarkets.com/api/trades/).
 
  2. [Machine-Readable Termsheet Template](<Machine-Readable Termsheet.docx>): A machine-readable termsheet
- template created using the [Jinja](https://jinja.palletsprojects.com/en/3.0.x/) templating language. This
+ template created using the [Jinja](https://jinja.palletsprojects.com/) templating language. This
  template is open-source and free to use by all fixed-income market participants to foster
  standardisation of bond issuance documents.
 
