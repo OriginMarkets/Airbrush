@@ -31,7 +31,7 @@ def validate_file_type(parser, file_path, ext, must_exist=True):
     Args:
         parser: An argparse.ArgumentParser instance used to raise validation errors
         file_path: The file path string to be validated
-        ext: The file extenion to validate the file path against. In the format '.*'
+        ext: The file extenion to validate the file path against
         must_exist: Boolean for whether to check existence of file in validation. Defaults to True
 
     Returns:
@@ -40,7 +40,7 @@ def validate_file_type(parser, file_path, ext, must_exist=True):
     path = Path(file_path)
     if must_exist and not (path.exists() and path.is_file):
         parser.error(f"The file {file_path} does not exist")
-    elif not path.suffix == ext:
+    elif path.suffix != f".{ext}":
         parser.error(f"The file {file_path} has the wrong extension. Expected {ext}")
     return file_path
 
@@ -60,12 +60,12 @@ def create_arg_parser():
     parser = argparse.ArgumentParser(description=DESCRIPTION)
     parser.add_argument(
         ARGNAME_INPUT_JSON_PATH,
-        type=lambda f: validate_file_type(parser, f, ".json"),
+        type=lambda f: validate_file_type(parser, f, "json"),
         help="The path to the json input file",
     )
     parser.add_argument(
         ARGNAME_OUTPUT_DOCX_PATH,
-        type=lambda f: validate_file_type(parser, f, ".docx", must_exist=False),
+        type=lambda f: validate_file_type(parser, f, "docx", must_exist=False),
         help="The path to create the docx termsheet at",
     )
     return parser
