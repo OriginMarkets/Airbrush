@@ -29,7 +29,7 @@ Airbrush works and using it within their own systems. The Origin Documentation p
 tools and we hope that by sharing them, we can encourage stronger collaboration and standardisation across
 the market.
 
- 1. [Airbrush OpenAPI Specification](<Airbrush v1.0.yaml>): The Airbrush data specification defined in a
+ 1. [Airbrush OpenAPI Specification](Airbrush.yaml): The Airbrush data specification defined in a
  yaml file that leverages the [OpenApi](https://www.openapis.org/) Specification, enabling consumers to
  import the data specification and generate a client in over 40 different languages including Java, Python
  and Scala. The Origin platform publishes all trade data according to Airbrush; more information can be
