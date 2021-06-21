@@ -29,27 +29,30 @@ Airbrush works and using it within their own systems. The Origin Documentation p
 tools and we hope that by sharing them, we can encourage stronger collaboration and standardisation across
 the market.
 
- 1. [Airbrush OpenAPI Specification](Airbrush.yaml): The Airbrush data specification defined in a
+ 1. [Airbrush Presentation](<Airbrush v2.0 - Jun 2021_Final.pdf>): A presentation describing the motivation
+ behind Airbrush and how it has been developed. This is a good document to start with.
+
+ 2. [Airbrush OpenAPI Specification](Airbrush.yaml): The Airbrush data specification defined in a
  yaml file that leverages the [OpenApi](https://www.openapis.org/) Specification, enabling consumers to
  import the data specification and generate a client in over 40 different languages including Java, Python
  and Scala. The Origin platform publishes all trade data according to Airbrush; more information can be
  found on the [Orign API documentation page](https://login2.originmarkets.com/api/trades/).
 
- 2. [Machine-Readable Termsheet Template](<Machine-Readable Termsheet.docx>): A machine-readable termsheet
- template created using the [Jinja](https://jinja.palletsprojects.com/) templating language. This
- template is open-source and free to use by all fixed-income market participants to foster
- standardisation of bond issuance documents.
+ 3. [Machine-Readable Termsheet Template](<Machine-Readable Termsheet/Machine-Readable Termsheet.docx>): A
+ machine-readable termsheet template created using the [Jinja](https://jinja.palletsprojects.com/)
+ templating language. This template is open-source and free to use by all fixed-income market participants
+ to foster standardisation of bond issuance documents.
 
- 3. [Standardised Termsheet Template](<Standardised Termsheet.docx>): An equivalent version of the
+ 4. [Standardised Termsheet Template](<Standardised Termsheet.docx>): An equivalent version of the
  machine-readable template for easier reading.
 
- 4. [Example Airbrush Outputs](./examples): A number of example issuances represented in the Airbrush
- data format.
+ 5. [Example Airbrush Outputs](<Machine-Readable Termsheet/Examples>): A number of example issuances
+ represented in the Airbrush data format.
 
- 5. [Command Line Tool](create_termsheet.py) for Creating New Termsheets from Airbrush data: This simple
- command line tool serves as example python code that can be used to generate a new termsheet based on
- the Machine-Readable Termsheet Template and an Airbrush-compliant data file. Please see the [instructions
- below](#termsheet-creator-command-line-tool) to try it out.
+ 6. [Command Line Tool](<Machine-Readable Termsheet/create_termsheet.py>) for Creating New Termsheets from
+ Airbrush data: This simple command line tool serves as example python code that can be used to generate a
+ new termsheet based on the Machine-Readable Termsheet Template and an Airbrush-compliant data file.
+ Please see the [instructions below](#termsheet-creator-command-line-tool) to try it out.
 
 If you want to learn more about Airbrush and Origin, or have any feedback, send us an email at
 airbrush@originmarkets.com.
@@ -57,8 +60,8 @@ airbrush@originmarkets.com.
 ## Termsheet Creator Command Line Tool
 
 The python command line tool can be used to create a new termsheet based on the
-[Machine-Readable Termsheet Template]("Machine-Readable Termsheet.docx") and an Airbrush-compliant JSON
-file containting the data for a trade.
+[Machine-Readable Termsheet Template](<Machine-Readable Termsheet/Machine-Readable Termsheet.docx>) and an
+Airbrush-compliant JSON file containting the data for a trade.
 
 ### Installation
 
@@ -90,6 +93,7 @@ Now that the repo is downloaded, get the project dependencies with the following
 [pip](https://www.python.org/downloads/) commands:
 
 ```sh
+cd 'Machine-Readable Termsheet'
 pip install --upgrade pip
 pip install -r requirements.txt
 ```
@@ -113,19 +117,23 @@ optional arguments:
 ```
 
 To make it easy to test out Origin's termsheet template, we have created a few example trades that you can
-try out. You can find these in the [Examples folder](./examples). You will find both an
-Airbrush-compliant json input file and a docx output file for the following trade types.
+try out. You can find these in the [Examples folder](<Machine-Readable Termsheet/Examples>). You will find
+both an Airbrush-compliant json input file and a docx output file for the following trade types:
+
+ 1. Fixed Rate Note
+ 2. Floating Rate Note
+ 3. Zero Coupon Note
 
 To see this tool in action, you can now run the following command in your terminal to create your own
 termsheet based on a json input file:
 
 ```sh
-python create_termsheet.py examples/fixed_rate.json examples/fixed_rate.docx
+python create_termsheet.py Examples/fixed_rate.json Examples/fixed_rate.docx
 ```
 
 Feel free to update or create a new input file to see the corresponding docx file created by running the
 general command in your terminal:
 
 ```sh
-python create_termsheet.py examples/my_trade.json examples/my_termsheet.docx
+python create_termsheet.py Examples/my_trade.json Examples/my_termsheet.docx
 ```
