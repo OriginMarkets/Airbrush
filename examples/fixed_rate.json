@@ -111,6 +111,7 @@
       "name":"DIP (EUR 20.00bn updated 17-Feb-2021)",
       "type":"DIP"
    },
+   "rating_type": "Unrated",
    "redemption":{
       "call_features":"None",
       "change_of_control_put_required":false,
