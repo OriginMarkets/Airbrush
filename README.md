@@ -82,7 +82,7 @@ git clone https://github.com/OriginMarkets/Airbrush.git
 cd Airbrush
 ```
 
-Create a virtual environment to install the project dependencies into and enter it:
+Create a virtual environment to install the project dependencies into and enter it. You may need to add a `3` to the end of `python` if your version of python is 3 or later:
 
 ```sh
 python -m venv venv
