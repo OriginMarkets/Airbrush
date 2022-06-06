@@ -29,14 +29,14 @@ Airbrush works and using it within their own systems. The Origin Documentation p
 tools and we hope that by sharing them, we can encourage stronger collaboration and standardisation across
 the market.
 
- 1. [Airbrush Presentation](<Airbrush v2.0 - Jun 2021_Final.pdf>): A presentation describing the motivation
+ 1. [Airbrush Presentation](<Airbrush - Jun 2021_Final.pdf>): A presentation describing the motivation
  behind Airbrush and how it has been developed. This is a good document to start with.
 
  2. [Airbrush OpenAPI Specification](Airbrush.yaml): The Airbrush data specification defined in a
  yaml file that leverages the [OpenApi](https://www.openapis.org/) Specification, enabling consumers to
  import the data specification and generate a client in over 40 different languages including Java, Python
  and Scala. The Origin platform publishes all trade data according to Airbrush; more information can be
- found on the [Orign API documentation page](https://login2.originmarkets.com/api/trades/).
+ found on the [Orign API documentation page](https://airbrush.originmarkets.com/v3/).
 
  3. [Machine-Readable Termsheet Template](<Machine-Readable Termsheet/Machine-Readable Termsheet.docx>): A
  machine-readable termsheet template created using the [Jinja](https://jinja.palletsprojects.com/)
